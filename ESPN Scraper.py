@@ -25,16 +25,18 @@ stat = ''
 # TODO: Unify data into single excel file for visualization/data storage purposes
 
 teams = {
-    'Bleacherberg Cup Snakes': 'https://fantasy.espn.com/baseball/team?leagueId=85215692&seasonId=2023&teamId=1' + stat,
-    'Honolulu Blue Macs': 'https://fantasy.espn.com/baseball/team?leagueId=85215692&seasonId=2023&teamId=9' + stat,
-    'NoCAP Bussin FR FR': 'https://fantasy.espn.com/baseball/team?leagueId=85215692&seasonId=2023&teamId=11' + stat,
-    'Booers SmallDongBrauns': 'https://fantasy.espn.com/baseball/team?leagueId=85215692&seasonId=2023&teamId=13' + stat,
-    'Raintown Puddleduckies': 'https://fantasy.espn.com/baseball/team?leagueId=85215692&seasonId=2023&teamId=6' + stat,
-    'Grand Lake Ospreys': 'https://fantasy.espn.com/baseball/team?leagueId=85215692&seasonId=2023&teamId=10' + stat,
-    'God Dangit Bobbehs': 'https://fantasy.espn.com/baseball/team?leagueId=85215692&seasonId=2023&teamId=12' + stat,
-    "Kanye's Sleepy Tweets": 'https://fantasy.espn.com/baseball/team?leagueId=85215692&seasonId=2023&teamId=14' + stat,
-    'Armor Trimmers' + '\t': 'https://fantasy.espn.com/baseball/team?leagueId=85215692&seasonId=2023&teamId=15' + stat,
-    'Weeaboo Bombers' + '\t': 'https://fantasy.espn.com/baseball/team?leagueId=85215692&seasonId=2023&teamId=16' + stat}
+    'Bleacherberg Cup Snakes': 'https://fantasy.espn.com/baseball/team?leagueId=85215692&seasonId=2024&teamId=1' + stat,
+    'Honolulu Blue Macs': 'https://fantasy.espn.com/baseball/team?leagueId=85215692&seasonId=2024&teamId=9' + stat,
+    'NoCAP Bussin FR FR': 'https://fantasy.espn.com/baseball/team?leagueId=85215692&seasonId=2024&teamId=11' + stat,
+    'Edgeville Moundhoppers': 'https://fantasy.espn.com/baseball/team?leagueId=85215692&seasonId=2024&teamId=13' + stat,
+    'Hyperion Acorns' + '\t': 'https://fantasy.espn.com/baseball/team?leagueId=85215692&seasonId=2024&teamId=10' + stat,
+    'Humboldt Homies' + '\t': 'https://fantasy.espn.com/baseball/team?leagueId=85215692&seasonId=2024&teamId=12' + stat,
+    "Cheek Busters" + '\t': 'https://fantasy.espn.com/baseball/team?leagueId=85215692&seasonId=2024&teamId=14' + stat,
+    'Armor Trimmers' + '\t': 'https://fantasy.espn.com/baseball/team?leagueId=85215692&seasonId=2024&teamId=15' + stat,
+    'Wallstreet Wildcards': 'https://fantasy.espn.com/baseball/team?leagueId=85215692&seasonId=2024&teamId=16' + stat,
+    'South Bay Beach Babes': 'https://fantasy.espn.com/baseball/team?leagueId=85215692&seasonId=2024&teamId=6' + stat,
+    'Penacony Dream Catchers': 'https://fantasy.espn.com/baseball/team?leagueId=85215692&seasonId=2024&teamId=17' + stat,
+    'Matt\'s Monstrous Team': 'https://fantasy.espn.com/baseball/team?leagueId=85215692&seasonId=2024&teamId=18' + stat}
 
 # This is our loop, iterates teams and outputs urls
 for url in teams:  # These variable names are horrible
