@@ -23,6 +23,9 @@ stat = ''
 # TODO: Add dates for visualization purposes
 # TODO: Add PeriodId to Date conversion for visualization purposes
 # TODO: Unify data into single excel file for visualization/data storage purposes
+# TODO: Fix headless geckodriver
+# TODO: Add LeagueID Variable
+# TODO: Split Teams out into separate file so we can obfuscate them
 
 teams = {
     'Bleacherberg Cup Snakes': 'https://fantasy.espn.com/baseball/team?leagueId=85215692&seasonId=2024&teamId=1' + stat,
@@ -47,7 +50,7 @@ for url in teams:  # These variable names are horrible
     while periodId < todayPeriodId:
         driver.get(  # Commented out to get Projected Totals post draft
             # + '&statSplit=singleScoringPeriod&scoringPeriodId=' + str(periodId)
-            teams[url]
+            teams[url] + '&statSplit=projections'
         )
         time.sleep(4)
         # print(periodId)
@@ -82,8 +85,8 @@ for url in teams:  # These variable names are horrible
 
         # Removing Rows that would cause errant totals/etc
         result1 = result1[result1.SLOT != 'P']  # Removing P from Batters
-        # result1 = result1[result1.SLOT != 'IL']  # Removing IL from Batters
-        # result2 = result2[result2.SLOT != 'IL']  # Removing IL from Pitchers
+        result1 = result1[result1.SLOT != 'IL']  # Removing IL from Batters
+        result2 = result2[result2.SLOT != 'IL']  # Removing IL from Pitchers
 
         # Removing Bench & Totals Col for Daily Stats
 
