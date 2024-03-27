@@ -4,6 +4,7 @@ from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.firefox.options import Options
 import time
+from teams import *
 
 Options = Options()
 Options.headless = True
@@ -11,32 +12,27 @@ Options.headless = True
 driver = webdriver.Firefox(options=Options)
 path = '/Users/freeck/Dropbox/Programming/Repos/ESPN Scraper/Data/'
 averages = []
-todayPeriodId = 2
-periodId = 1
+todayscoringPeriodId = 2
 teamCount = 0
 
-stat = ''
-# stat = '&scoringPeriodId=9&statSplit=singleScoringPeriod'
+# stat = ''  # To be removed in lieu of "statSplit"
+# stat = '&scoringscoringPeriodId=9&statSplit=singleScoringPeriod'
+
+# TODO: Add year variable & test all of below on 2023 Season
+# TODO: Fix headless geckodriver
+# TODO: Add LeagueID Variable
 
 # TODO: Add flag for current/total etc (instead of the cancerous commenting/uncommenting currently happening)
-# TODO: Add year variable & test all of below on 2022 Season
-# TODO: Add dates for visualization purposes
-# TODO: Add PeriodId to Date conversion for visualization purposes
-# TODO: Unify data into single excel file for visualization/data storage purposes
+# TODO: Add scoringPeriodId to Date conversion for visualization purposes
 
-teams = {
-    'Bleacherberg Cup Snakes': 'https://fantasy.espn.com/baseball/team?leagueId=85215692&seasonId=2024&teamId=1' + stat,
-    'Honolulu Blue Macs': 'https://fantasy.espn.com/baseball/team?leagueId=85215692&seasonId=2024&teamId=9' + stat,
-    'NoCAP Bussin FR FR': 'https://fantasy.espn.com/baseball/team?leagueId=85215692&seasonId=2024&teamId=11' + stat,
-    'Edgeville Moundhoppers': 'https://fantasy.espn.com/baseball/team?leagueId=85215692&seasonId=2024&teamId=13' + stat,
-    'Hyperion Acorns' + '\t': 'https://fantasy.espn.com/baseball/team?leagueId=85215692&seasonId=2024&teamId=10' + stat,
-    'Humboldt Homies' + '\t': 'https://fantasy.espn.com/baseball/team?leagueId=85215692&seasonId=2024&teamId=12' + stat,
-    "Cheek Busters" + '\t': 'https://fantasy.espn.com/baseball/team?leagueId=85215692&seasonId=2024&teamId=14' + stat,
-    'Armor Trimmers' + '\t': 'https://fantasy.espn.com/baseball/team?leagueId=85215692&seasonId=2024&teamId=15' + stat,
-    'Wallstreet Wildcards': 'https://fantasy.espn.com/baseball/team?leagueId=85215692&seasonId=2024&teamId=16' + stat,
-    'South Bay Beach Babes': 'https://fantasy.espn.com/baseball/team?leagueId=85215692&seasonId=2024&teamId=6' + stat,
-    'Penacony Dream Catchers': 'https://fantasy.espn.com/baseball/team?leagueId=85215692&seasonId=2024&teamId=17' + stat,
-    'Matt\'s Monstrous Team': 'https://fantasy.espn.com/baseball/team?leagueId=85215692&seasonId=2024&teamId=18' + stat}
+# TODO: Split Teams out into separate file so we can obfuscate them
+# TODO: Send files into folder structure (turn this into a database later lmao)
+# (Year Folder) > (Team Folder) > .csv for each scoringPeriodId (converted to from scoringPeriodId to date)
+# TODO: Make example teams template file
+# TODO: Automatically infer todayscoringPeriodId via current date
+
+# URL Format: https://fantasy.espn.com/baseball/team? + 'leagueId'+ 'seasonId' + 'teamId' + 'scoringscoringPeriodId' + 'statSplit'
+# ------------------------------------------------------ variable -- variable -- !variable ---- variable --------------- variable
 
 # This is our loop, iterates teams and outputs urls
 for url in teams:  # These variable names are horrible
@@ -44,13 +40,13 @@ for url in teams:  # These variable names are horrible
     print(url)  # Prints team name
     # print(teams[url])  # Prints team url
 
-    while periodId < todayPeriodId:
+    while scoringPeriodId < todayscoringPeriodId:
         driver.get(  # Commented out to get Projected Totals post draft
-            # + '&statSplit=singleScoringPeriod&scoringPeriodId=' + str(periodId)
-            teams[url]
+            # + '&statSplit=singleScoringPeriod&scoringscoringPeriodId=' + str(scoringPeriodId)
+            teams[url] + '&statSplit=projections'
         )
         time.sleep(4)
-        # print(periodId)
+        # print(scoringPeriodId)
 
         table = driver.find_elements(by=By.TAG_NAME, value='table')
 
@@ -77,13 +73,13 @@ for url in teams:  # These variable names are horrible
 
         # Batting Results
         result1 = concat([df0, df1, df2], axis=1).droplevel(0, axis=1)
-        # Pitching Results (Separate so we can quickly remove P from batters below)
+        # Pitching Results (Separate so we can quickly remove P from batters below) (Fucking Ohtani)
         result2 = concat([df3, df4, df5], axis=1).droplevel(0, axis=1)
 
         # Removing Rows that would cause errant totals/etc
         result1 = result1[result1.SLOT != 'P']  # Removing P from Batters
-        # result1 = result1[result1.SLOT != 'IL']  # Removing IL from Batters
-        # result2 = result2[result2.SLOT != 'IL']  # Removing IL from Pitchers
+        result1 = result1[result1.SLOT != 'IL']  # Removing IL from Batters
+        result2 = result2[result2.SLOT != 'IL']  # Removing IL from Pitchers
 
         # Removing Bench & Totals Col for Daily Stats
 
@@ -105,7 +101,7 @@ for url in teams:  # These variable names are horrible
         # print(final_result)
         # print(final_result.shape)
 
-        if periodId == 1:
+        if scoringPeriodId == 1:
             average = (
                 url, final_result['tot'].sum(), result1['tot'].sum(), result2['tot'].sum())
             averages.append(average)
@@ -114,7 +110,7 @@ for url in teams:  # These variable names are horrible
             averages[teamCount][2] += result1['tot'].sum()
             averages[teamCount][3] += result2['tot'].sum()
 
-        # if periodId == 1:
+        # if scoringPeriodId == 1:
         #     average = [
         #         url, final_result['FPTS'].sum(), result1['FPTS'].sum(), result2['FPTS'].sum()]
         #     averages.append(average)
@@ -123,23 +119,25 @@ for url in teams:  # These variable names are horrible
         #     averages[teamCount][2] += result1['FPTS'].sum()
         #     averages[teamCount][3] += result2['FPTS'].sum()
 
-        periodId += 1
+        scoringPeriodId += 1
         print(averages)
 
-        if periodId == todayPeriodId:
+        if scoringPeriodId == todayscoringPeriodId:
             teamCount += 1
             print('Team Count Is: ' + str(teamCount))
             break
 
     print(averages)
 
-    periodId = 1
+    scoringPeriodId = 1
 
     # final_result.to_csv(path + url + '.csv',  index=False)
 
 driver.close()
 
 averages.sort(key=lambda a: a[1], reverse=True)
+
+# A timeless data display approach
 
 print('\n')
 print('----------------Ordered By Total---------------')
