@@ -5,49 +5,43 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.firefox.options import Options
 import time
 from teams import *
+# from teams_test import *
 
+# Off with his (gecko) head
 Options = Options()
-Options.headless = True
-
+Options.add_argument("--headless")
 driver = webdriver.Firefox(options=Options)
+
 path = '/Users/freeck/Dropbox/Programming/Repos/ESPNScraper/Data/'
 averages = []
-todayscoringPeriodId = 2
+todayscoringPeriodId = 8
 teamCount = 0
 
 # stat = ''  # To be removed in lieu of "statSplit"
 # stat = '&scoringscoringPeriodId=9&statSplit=singleScoringPeriod'
 
-# TODO: Add year variable & test all of below on 2023 Season
-# TODO: Fix headless geckodriver
-# TODO: Add LeagueID Variable
-
-# TODO: Add flag for current/total etc (instead of the cancerous commenting/uncommenting currently happening)
-# TODO: Add scoringPeriodId to Date conversion for visualization purposes
-
-# TODO: Split Teams out into separate file so we can obfuscate them
-# TODO: Send files into folder structure (turn this into a database later lmao)
-# (Year Folder) > (Team Folder) > .csv for each scoringPeriodId (converted to from scoringPeriodId to date)
-# TODO: Make example teams template file
-# TODO: Automatically infer todayscoringPeriodId via current date
-
-# URL Format: https://fantasy.espn.com/baseball/team? + 'leagueId'+ 'seasonId' + 'teamId' + 'scoringscoringPeriodId' + 'statSplit'
-# ------------------------------------------------------ variable -- variable -- !variable ---- variable --------------- variable
+# See google doc for up to date TODO
+# # TODO: Fix headless geckodriver
+# # TODO: Add flag for current/total etc (instead of the cancerous commenting/uncommenting currently happening)
+# # TODO: Add scoringPeriodId to Date conversion for visualization purposes
+# # TODO: Send files into folder structure (turn this into a database later lmao)
+# # (Year Folder) > (Team Folder) > .csv for each scoringPeriodId (converted to from scoringPeriodId to date)
+# # TODO: Make example teams template file
+# # TODO: Automatically infer todayscoringPeriodId via current date
 
 # This is our loop, iterates teams and outputs urls
 for url in teams:  # These variable names are horrible
 
     print(url)  # Prints team name
-    # print(teams[url])  # Prints team url
+    # print(teams[url])  # Prints team url for testing
 
     while scoringPeriodId < todayscoringPeriodId:
-        # print(teams[url])
         driver.get(  # Commented out to get Projected Totals post draft
             # + '&statSplit=singleScoringPeriod&scoringscoringPeriodId=' + str(scoringPeriodId)
             teams[url]
         )
-        time.sleep(4)
-        # print(scoringPeriodId)
+        time.sleep(4)  # Can we make this better?
+        # print(scoringPeriodId) # Print for testing
 
         table = driver.find_elements(by=By.TAG_NAME, value='table')
 
@@ -88,13 +82,13 @@ for url in teams:  # These variable names are horrible
         # result1 = result1[result1.SLOT != 'Bench']
 
         # Removing Totals from Batters
-        result1 = result1[result1.opp != 'TOTALS']
+        # result1 = result1[result1.opp != 'TOTALS']
 
         # Removing Bench from Pitchers
         # result2 = result2[result2.SLOT != 'Bench']
 
         # Removing Totals from Pitchers
-        result2 = result2[result2.opp != 'TOTALS']
+        # result2 = result2[result2.opp != 'TOTALS']
 
         final_result = concat([result1, result2]).fillna(0)
 
