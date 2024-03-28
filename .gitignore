@@ -1,6 +1,6 @@
-Data/
-teams.py
+/Data/
+/teams.py
+/geckodriver.log
 *.pyc
 *.csv
-geckodriver.log
 *.log
