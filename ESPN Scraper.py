@@ -10,7 +10,7 @@ Options = Options()
 Options.headless = True
 
 driver = webdriver.Firefox(options=Options)
-path = '/Users/freeck/Dropbox/Programming/Repos/ESPN Scraper/Data/'
+path = '/Users/freeck/Dropbox/Programming/Repos/ESPNScraper/Data/'
 averages = []
 todayscoringPeriodId = 2
 teamCount = 0
@@ -41,9 +41,10 @@ for url in teams:  # These variable names are horrible
     # print(teams[url])  # Prints team url
 
     while scoringPeriodId < todayscoringPeriodId:
+        # print(teams[url])
         driver.get(  # Commented out to get Projected Totals post draft
             # + '&statSplit=singleScoringPeriod&scoringscoringPeriodId=' + str(scoringPeriodId)
-            teams[url] + '&statSplit=projections'
+            teams[url]
         )
         time.sleep(4)
         # print(scoringPeriodId)
