@@ -2,4 +2,4 @@ Data/
 teams.py
 *.pyc
 *.csv
-geckodriver.log
+*.log
