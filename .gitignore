@@ -1,5 +1,7 @@
 /teams.py
+/teams_test.py
 /geckodriver.log
+/.DS_Store
 /__pycache__/
 *.pyc
 *.csv
