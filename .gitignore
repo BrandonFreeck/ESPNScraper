@@ -6,3 +6,4 @@
 *.pyc
 *.csv
 *.log
+*__broken.py
